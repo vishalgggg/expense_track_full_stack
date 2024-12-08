@@ -2,9 +2,11 @@
 <html>
 <head>
     <title>Signup Form</title>
+    <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <form>
+    <form id="signupForm">
         <label for="name">Enter your name:</label>
         <input type="text" id="name" name="name" required><br><br>
         
@@ -16,5 +18,33 @@
         
         <button type="submit">Signup</button>
     </form>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            // Get form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Make the POST request with Axios
+            axios.post('http://localhost:3000/signup', {
+                name: name,
+                email: email,
+                password: password
+            })
+            .then(function(response) {
+                // Handle success
+                console.log('User registered successfully:', response.data);
+                alert('User registered successfully!');
+            })
+            .catch(function(error) {
+                // Handle error
+                console.error('There was an error registering the user:', error);
+                alert('There was an error registering the user. Please try again.');
+            });
+        });
+    </script>
 </body>
 </html>
