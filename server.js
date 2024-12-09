@@ -7,6 +7,27 @@ const app = express();
 const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
+// Login route
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+            return res.send({ error: 'email_not_exist' });
+        }
+
+        if (user.password === password) {
+            return res.send({ status: 'success' });
+        } else {
+            return res.send({ error: 'password_incorrect' });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).send({ error: 'Database query error' });
+    }
+});
 
 app.post('/signup', async (req, res) => {
     const { name, email, password } = req.body;
